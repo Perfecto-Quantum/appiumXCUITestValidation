@@ -1,7 +1,7 @@
 # Appium/XCUITest Validation
 
 ## Description
-This scan utility, written in **PHP** is intended for users who wish to validate the strength of xPaths used in their test code, as well as to check for Appium/XCUITest compatibility coming off of Appium/UIAutomer per [Perfecto Documentation](http://developers.perfectomobile.com/display/PD/XCUITest+Infrastructure).
+This scan utility, written in **PHP** is intended for users who wish to validate the strength of xPaths used in their test code, as well as to check for Appium/XCUITest compatibility coming off of Appium/UIAutomater per [Perfecto's Documentation](http://developers.perfectomobile.com/display/PD/XCUITest+Infrastructure).
 
 The high level functionality of the scan utility:
 - Start at the top of a test source tree (taken as input parameter)
@@ -24,7 +24,7 @@ php validate.php ~/ws/testCode/src/main
 ```
 Scan the test code located at: ~/ws/testCode/src/main, report the results AND make edits for UIAutomator to XCUITest object translation
 ```
-php validate.php ~/ws/testCode/src/main
+php validate.php ~/ws/testCode/src/main edit
 ```
 
 ## Results
