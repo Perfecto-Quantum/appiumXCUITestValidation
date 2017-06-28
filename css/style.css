@@ -1,0 +1,68 @@
+.header-style {
+    background-color: #27323a;
+    height: 60px;
+    color: aliceblue;
+}
+
+.navbar-brand {
+    height: 65px;
+}
+
+.appname {
+    padding-top: 32px;
+}
+
+.input-group{
+    padding-bottom: 10px;
+}
+
+.critical {
+    color: red;
+}
+
+.warning {
+    color: #d2ac11;
+}
+
+.checked {
+    color: #FFD700;
+}
+
+.glyphicon {
+    font-size: 22px;
+}
+
+#goButton {
+    width: 200px;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+}
+#goButtonC {
+     width: 120px;
+     left: 40%;
+     position: absolute;
+     transform: translateX(-50%);
+ }
+
+#score {
+    display: inline-block;
+    padding-top: 50px;
+}
+#rating{
+    display: inline-block;
+}
+.styled-select {
+   background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+   height: 29px;
+   overflow: hidden;
+   width: 240px;
+}
+
+.semi-square {
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+}
+.blue    { background-color: #3b8ec2; }
+
