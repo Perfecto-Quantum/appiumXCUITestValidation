@@ -32,7 +32,6 @@ $htmlBegin = <<<EOD
     <div class="page-header">
 
         <h1>XPath Validation Test Summary</h1>
-        <h3>GitHub Commit - $commitSha</h3>
     </div>
 EOD;
 
