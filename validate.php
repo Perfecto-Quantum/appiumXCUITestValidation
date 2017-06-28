@@ -1,25 +1,9 @@
 <?php
-/*
-
-*/
-
+include 'UIA-XCUI-translation.php';
 $src = $argv[1];
 
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
-
-/*
-$htmlRoot = "/var/www/html";
-//$objFilePath = "$htmlRoot/Quantum-Starter-Kit/src/main/resources/common/demo.loc";
-$webRoot = "http://54.175.223.15";
-//$htmlRoot = "/Applications/MAMP/htdocs";
-//$objFilePath = "$htmlRoot/quantum-test/src/main/resources/common/demo.loc";
-
-$xPathStatus = ""; $xPathFail = 0; $xPathWarn = 0;
-
-$outPutFN = $htmlRoot . "/xpathresults/" . $commitSha . "_xPathValidation.html";
-$outPutURL = $webRoot . "/xpathresults/" . $commitSha . "_xPathValidation.html";
-*/
 
 $outPutFN = "./results/" . time() . "_xPathValidation.html";
 
@@ -102,6 +86,11 @@ foreach ($files as $filename) {
           }
           $xPathEncode = "<a href=\"$urlValidateTarget" . urlencode($xPathSplit[1]) . "\">(View Details)</a>";
           $htmlOut .= "<strong><span class=\"label $labelStat\">$xpScore</span></strong> $xPathSplit[1] $xPathEncode</br>\n";
+          foreach ($translation as $key => $value) {
+              if(preg_match("/$key/", $line)){
+                  $htmlOut .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><span class=\"label label-danger\">XCUITest Incompatible</span>Replace $key with $value</strong></br>\n";
+              }
+          }
        }
     }
   fclose($objFile);
