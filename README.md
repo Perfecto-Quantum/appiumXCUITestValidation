@@ -29,3 +29,5 @@ php validate.php ~/ws/testCode/src/main edit
 
 ## Results
 Results will be located in the `./results` sub-directory
+
+![Alt text](/images/screenshot.jpg?raw=true "Results screenshot")
