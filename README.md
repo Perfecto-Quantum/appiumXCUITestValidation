@@ -13,20 +13,39 @@ The high level functionality of the scan utility:
 - Create a summary page which highlights file by file the xpath score and XCUITest compliance.
 - OPTIONALLY: Edit the source code to make the necessary changes for UIAutomator to XCUITest object translation
 
+## Script Customization
+In order to run this utility, you must first adjust the `$searchRegex` string to identify the 
+patterns in use when creating XPaths in your test code. 
+For example, if your code uses syntax such as:
+```
+getDriver().findElement(By.xpath("//*[@label=\"Accounts\"]")).click();
+```
+ You would set the regex to:
+ ```
+ $searchRegex = "xpath";
+ ```
+
+ If you use the syntax:
+ ```
+ myobj = DOM://*[text()="Text notification: "]/parent::*[@class='ng-scope ng-binding']`
+ otherobj = NATIVE://*[@class='UIButtonLabel' and text()="Back"]
+ ```
+ You need to have the regex look for both. For example:
+ ```
+ $searchRegex = "(= DOM:|= NATIVE:)";
+ ```
+
+ The search is case-insensitive so you do not need to add /i to your regex. 
+
 ## Usage
 ```
-php validate.php <source directory> [edit]
+php validate.php <source directory>
 ```
 Example:
 Scan the test code located at: ~/ws/testCode/src/main and report the results
 ```
 php validate.php ~/ws/testCode/src/main
 ```
-Scan the test code located at: ~/ws/testCode/src/main, report the results AND make edits for UIAutomator to XCUITest object translation
-```
-php validate.php ~/ws/testCode/src/main edit
-```
-
 ## Results
 Results will be located in the `./results` sub-directory
 
