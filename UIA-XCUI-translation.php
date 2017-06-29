@@ -17,6 +17,7 @@ $translation = array(
    "UIAPageIndicator" => "XCUIElementTypePageIndicator",
    "UIAPicker" => "XCUIElementTypePicker",
    "UIAPickerWheel" => "XCUIElementTypePickerWheel",
+   "UIAPopover" => "XCUIElementTypePopover",
    "UIAProgressIndicator" => "XCUIElementTypeProgressIndicator",
    "UIAScrollView" => "XCUIElementTypeScrollView",
    "UIASearchBar" => "XCUIElementTypeSearchField",
