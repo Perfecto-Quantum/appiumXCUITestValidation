@@ -2,6 +2,25 @@
 include 'UIA-XCUI-translation.php';
 $src = $argv[1];
 
+/* *** CUSTOMIZE ***
+In order to run this utility, you must first adjust the $searchRegex string to identify the 
+patterns in use when creating XPaths in your test code. 
+For example, if your code uses syntax such as:
+    getDriver().findElement(By.xpath("//*[@label=\"Accounts\"]")).click();
+    You would set the regex to:
+    $searchRegex = "xpath";
+
+    If you use the syntax:
+    myobj = DOM://*[text()="Text notification: "]/parent::*[@class='ng-scope ng-binding']
+    otherobj = NATIVE://*[@class='UIButtonLabel' and text()="Back"]
+    You need to have the regex look for both. For example:
+    $searchRegex = "(= DOM:|= NATIVE:)";
+
+    The search is case-insensitive so you do not need to add /i to your regex. 
+*/
+
+$searchRegex = "(= DOM:|= NATIVE:)";
+
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
 
@@ -58,7 +77,7 @@ foreach ($files as $filename) {
   $objFilePath = $filename;
   $objFile = fopen($objFilePath, "r") or die("Unable to open file!");
     while (($line = fgets($objFile)) !== false) {
-       if(preg_match("/xpath/i", $line)) {
+       if(preg_match("/$searchRegex/i", $line)) {
           // strip whitespace off of beginning of line
           $line = trim($line);
           // skip if # or //  or look for  //skipXpath to intentionally skip
@@ -66,13 +85,14 @@ foreach ($files as $filename) {
              continue;
           }
           $xpathPrint = 1;
-          $xPathSplit = explode("xpath", $line);
+          $xPathSplit = preg_split("/$searchRegex/i", $line);
           $xPathSplit[1] = strstr($xPathSplit[1], '.click', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], '.sendKeys', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], '//', false) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], '}', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], ')"))', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], '"))', true) ?: $xPathSplit[1];
+          $xPathSplit[1] = strstr($xPathSplit[1], ',\"desc\"', true) ?: $xPathSplit[1];
           $xpScore = testXPath($urlValidate, $xPathSplit[1]);
           if ((int)$xpScore <= 89 && (int)$xpScore >= 80){
              $xPathWarn = 1;
