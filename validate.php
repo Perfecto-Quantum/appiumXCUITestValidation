@@ -6,6 +6,9 @@ $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
 
 $outPutFN = "./results/" . time() . "_xPathValidation.html";
+if (!is_dir('./results')) {
+    mkdir('./results');
+}
 
 $outPut = fopen($outPutFN, "w") or die("Unable to open file!");
 $htmlBegin = <<<EOD
