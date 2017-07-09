@@ -16,10 +16,15 @@ For example, if your code uses syntax such as:
     You need to have the regex look for both. For example:
     $searchRegex = "(= DOM:|= NATIVE:)";
 
+    By default, the scanner is set to look for "//". It ignores lines that begin with "//" as they are comments. It will however try to run validaiton on any comments that occur at the end of a line so you can safely ignore those:
+
+    Default setting:
+    $searchRegex = "\/\/";
+
     The search is case-insensitive so you do not need to add /i to your regex. 
 */
 
-$searchRegex = "(= DOM:|= NATIVE:)";
+$searchRegex = "\/\/";
 
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
@@ -84,6 +89,10 @@ foreach ($files as $filename) {
           if(preg_match("/^#/", $line) || preg_match("/^\/\//", $line) || preg_match("/\/\/skipXpath/", $line)) {
              continue;
           }
+          // if using regex to search for "//" - skip if matched http:// or https://
+          if(preg_match("/http:\/\//", $line) || preg_match("/https:\/\//", $line)) {
+             continue;
+          }
           $xpathPrint = 1;
           $xPathSplit = preg_split("/$searchRegex/i", $line);
           $xPathSplit[1] = strstr($xPathSplit[1], '.click', true) ?: $xPathSplit[1];
@@ -92,7 +101,12 @@ foreach ($files as $filename) {
           $xPathSplit[1] = strstr($xPathSplit[1], '}', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], ')"))', true) ?: $xPathSplit[1];
           $xPathSplit[1] = strstr($xPathSplit[1], '"))', true) ?: $xPathSplit[1];
+          $xPathSplit[1] = strstr($xPathSplit[1], '");', true) ?: $xPathSplit[1];   
           $xPathSplit[1] = strstr($xPathSplit[1], ',\"desc\"', true) ?: $xPathSplit[1];
+          if (strcmp($searchRegex, "\/\/") == 0){
+             // if using regex to search for "//", add back to the beginning of the string
+             $xPathSplit[1] = "//" . $xPathSplit[1];
+          }
           $xpScore = testXPath($urlValidate, $xPathSplit[1]);
           if ((int)$xpScore <= 89 && (int)$xpScore >= 80){
              $xPathWarn = 1;
