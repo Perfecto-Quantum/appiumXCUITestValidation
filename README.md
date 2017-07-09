@@ -34,6 +34,13 @@ getDriver().findElement(By.xpath("//*[@label=\"Accounts\"]")).click();
  ```
  $searchRegex = "(= DOM:|= NATIVE:)";
  ```
+ 
+ By default, the scanner is set to look for "//". It ignores lines that begin with "//" as they are comments. It will however try to run validaiton on any comments that occur at the end of a line so you can safely ignore those:
+
+ Default setting:
+ ```
+ $searchRegex = "\/\/";
+ ```
 
  The search is case-insensitive so you do not need to add /i to your regex. 
 
