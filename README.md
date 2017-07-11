@@ -15,7 +15,7 @@ There are ***TWO*** scan utilities located in this project.
 	- Pass the xPath to the online xPath validation tool located [HERE](https://xpathvalidator.herokuapp.com/)
 	- Call out any object translations that need to be fixed to be XCUITest compliant (ex: UIButton -> XCUIElementTypeButton)
 - Identify non-supported call/capabilities per the [Perfecto Documentation](http://developers.perfectomobile.com/display/PD/XCUITest+Infrastructure)
-- Create a summary page which highlights file by file the xpath score and XCUITest compliance. Report name format is: `(time)_xPathValidation.html`
+- Create a summary page which highlights file by file the xpath score and XCUITest compliance. Report name format is: `(md5)_xPathValidation.html`
 
 #### Script Customization
 `validate.php` -  By default, the scanner is set to look for "//" in the source code to identify XPaths. It ignores lines that begin with "//" as it recognizes they are comments. It does not know to skip comments that occur at the end of the line. Examples:
@@ -65,7 +65,7 @@ php validate.php ~/ws/testCode/src/main
 - For any XPath detected: 
 	- Pass the xPath to the online xPath validation tool located [HERE](https://xpathvalidator.herokuapp.com/)
 	- Call out any object translations that need to be fixed to be XCUITest compliant (ex: UIButton -> XCUIElementTypeButton)
-- Create a summary page which highlights file by file the xpath score and XCUITest compliance. Report name format is: `(time)_xPathValidation_ReportingScan.html`
+- Create a summary page which highlights file by file the xpath score and XCUITest compliance. Report name format is: `(md5)_xPathValidation_ReportingScan.html`
 #### Script Customization
 `reportscan.php` requires some customization before use.
 * `$cloudURL` - The URL of your Perfecto Cloud
