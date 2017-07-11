@@ -15,7 +15,7 @@ function checkTranslation($line) {
    require 'UIA-XCUI-translation.php';
    foreach ($translation as $key => $value) {
       if(preg_match("/$key/", $line)){
-         $htmlOut .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><span class=\"label label-danger\">XCUITest Incompatible</span>Replace $key with $value</strong></br>\n";
+         $htmlOut .= "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><span class=\"label label-danger\">XCUITest Incompatible</span>&nbsp;Replace $key with $value</strong></br>\n";
       }
    }
    return $htmlOut;

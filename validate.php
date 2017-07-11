@@ -1,6 +1,7 @@
 <?php
 
 require 'helpers.php';
+require 'appiumDeprecated.php';
 
 $src = $argv[1];
 
@@ -34,10 +35,14 @@ foreach ($rii as $file) {
 foreach ($files as $filename) {
   $stripFN =  str_replace($src, ".", $filename); 
   $htmlOut = "";
+  $appDepHTML = "";
   $xpathPrint = 0;
+  $appiumDeprecationPrint = 0;
+  $lineNum = 0;
   $objFilePath = $filename;
   $objFile = fopen($objFilePath, "r") or die("Unable to open file!");
     while (($line = fgets($objFile)) !== false) {
+       $lineNum++;
        if(preg_match("/$searchRegex/i", $line)) {
           // strip whitespace off of beginning of line
           $line = trim($line);
@@ -65,16 +70,28 @@ foreach ($files as $filename) {
           }
           $xpScore = testXPath($urlValidate, $xPathSplit[1]);
           $labelStat = calcLabel($xpScore);
-          $xPathEncode = "<a href=\"$urlValidateTarget" . urlencode($xPathSplit[1]) . "\">(View Details)</a>";
+          $xPathEncode = "<a href=\"$urlValidateTarget" . urlencode($xPathSplit[1]) . "\">(View Details)</a> (line: $lineNum)";
           $htmlOut .= "<strong><span class=\"label $labelStat\">$xpScore</span></strong> $xPathSplit[1] $xPathEncode</br>\n";
           $htmlOut .= checkTranslation($line);
        }
+       $appDepHTML .= checkAppiumDeprecated($line, $lineNum, $appDep);
+       if (strlen($appDepHTML) > 1){
+          $appiumDeprecationPrint = 1;
+       }
     }
   fclose($objFile);
-  if($xpathPrint === 1){
+  if($xpathPrint === 1 || $appiumDeprecationPrint === 1){
     print "$stripFN\n";
-    $htmlOut = "<strong>$stripFN</strong><br/>" . $htmlOut . "<br/>";
+    $htmlFileName = "<strong>$stripFN</strong><br/>";
+    fwrite($outPut, $htmlFileName);
+  }
+  if($xpathPrint === 1){
+    $htmlOut = $htmlOut . "<br/>";
     fwrite($outPut, $htmlOut);
+  }
+  if($appiumDeprecationPrint === 1 ){
+    $appDepHTML = "<strong>Appium Deprecation Warnings in $stripFN</strong></br>" . $appDepHTML . "<br/>";
+    fwrite($outPut, $appDepHTML);
   }
     
 }

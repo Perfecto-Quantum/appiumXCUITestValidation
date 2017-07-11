@@ -3,6 +3,7 @@ $translation = array(
    "UIAActionSheet" => "XCUIElementTypeSheet",
    "UIAActivityIndicator" => "XCUIElementTypeActivityIndicator",
    "UIAAlert" => "XCUIElementTypeAlert",
+   "UIAApplication" => "XCUIElementTypeApplication",
    "UIAButton" => "XCUIElementTypeButton",
    "UIACollectionCell" => "XCUIElementTypeCell",
    "UIACollectionView" => "XCUIElementTypeCollectionView",
