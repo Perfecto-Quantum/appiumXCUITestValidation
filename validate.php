@@ -2,6 +2,8 @@
 
 require 'helpers.php';
 require 'appiumDeprecated.php';
+require 'perfectoAppium.php';
+require 'inProgress.php';
 
 $src = $argv[1];
 
@@ -33,12 +35,16 @@ foreach ($rii as $file) {
     $files[] = $file->getPathname(); 
 }
 foreach ($files as $filename) {
-  $stripFN =  str_replace($src, ".", $filename); 
+  $stripFN =  str_replace($src, "./", $filename); 
   $fileExt = pathinfo($filename, PATHINFO_EXTENSION);
   $htmlOut = "";
   $appDepHTML = "";
+  $perfectoAppiumHTML = "";
+  $inProgressHTML = "";
   $xpathPrint = 0;
   $appiumDeprecationPrint = 0;
+  $perfectoAppiumPrint = 0;
+  $inProgressPrint = 0;
   $lineNum = 0;
   $objFilePath = $filename;
   $objFile = fopen($objFilePath, "r") or die("Unable to open file!");
@@ -86,9 +92,17 @@ foreach ($files as $filename) {
        if (strlen($appDepHTML) > 1){
           $appiumDeprecationPrint = 1;
        }
+       $perfectoAppiumHTML .= checkPerfectoAppium($line, $lineNum, $perfectoAppium);
+       if (strlen($perfectoAppiumHTML) > 1){
+          $perfectoAppiumPrint = 1;
+       }
+       $inProgressHTML .= checkInProgress($line, $lineNum, $inProgress);
+       if (strlen($inProgressHTML) > 1){
+          $inProgressPrint = 1;
+       }
     }
   fclose($objFile);
-  if($xpathPrint === 1 || $appiumDeprecationPrint === 1){
+  if($xpathPrint === 1 || $appiumDeprecationPrint === 1 || $perfectoAppiumPrint === 1 || $inProgressPrint === 1){
     print "$stripFN\n";
     $htmlFileName = "<strong>$stripFN</strong><br/>";
     fwrite($outPut, $htmlFileName);
@@ -100,6 +114,14 @@ foreach ($files as $filename) {
   if($appiumDeprecationPrint === 1 ){
     $appDepHTML = "<strong>Appium Deprecation Warnings in $stripFN</strong></br>" . $appDepHTML . "<br/>";
     fwrite($outPut, $appDepHTML);
+  }
+  if($perfectoAppiumPrint === 1 ){
+    $perfectoAppiumHTML = "<strong>Appium Compatibility Warnings in $stripFN</strong></br>" . $perfectoAppiumHTML . "<br/>";
+    fwrite($outPut, $perfectoAppiumHTML);
+  }
+  if($inProgressPrint === 1 ){
+    $inProgressHTML = "<strong>In Development, but currently unsupported Appium API warnings in $stripFN</strong></br>" . $inProgressHTML . "<br/>";
+    fwrite($outPut, $inProgressHTML);
   }
     
 }

@@ -74,6 +74,7 @@ $htmlBegin = <<<EOD
     <div class="page-header">
 
         <h1>XPath Validation and XCUITest Compatibility Summary</h1>
+        <h4>Note: XPath strength scores are valid for all automation scripts. Information related to XCUITest incompatibility, Deprecation warnings, etc... are <strong>ONLY</strong> applicable to iOS automation scripts running on Perfecto&rsquo;s XCUITest-based Appium automation infrastructure. Android scripts and iOS scripts running on the UI Automation based infrastructure are NOT affected. For detailed information, please refer to the <a href="http://developers.perfectomobile.com/display/PD/Migrating+iOS+test+scripts+to+XCUITest-based+automation+infrastructure">Perfecto Documentation.</a> </h4>
     </div>
 EOD;
   return $htmlBegin;
