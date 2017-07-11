@@ -11,7 +11,7 @@ $searchRegex = "\/\/";
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
 
-$outPutFN = "./results/" . time() . "_xPathValidation.html";
+$outPutFN = "./results/" . hash('md5', time()) . "_xPathValidation.html";
 if (!is_dir('./results')) {
     mkdir('./results');
 }

@@ -10,7 +10,7 @@ $startDate = '2017/05/01 17:00:00';
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
 
-$outPutFN = "./results/" . time() . "_xPathValidation_ReportingScan.html";
+$outPutFN = "./results/" . hash('md5', time()) . "_xPathValidation_ReportingScan.html";
 if (!is_dir('./results')) {
     mkdir('./results');
 }
