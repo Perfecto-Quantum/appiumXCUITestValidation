@@ -3,6 +3,11 @@ set_time_limit(0);
 error_reporting(E_ALL);
 ob_implicit_flush(TRUE);
 ob_end_flush();
+if($_SERVER["HTTPS"] != "on" && empty($_SERVER["HTTPS"]) && $_SERVER["PORT"] != 443 && $_SERVER["HTTP_X_FORWARDED_PROTO"] != "https" && $_SERVER["HTTP_X_FORWARDED_PORT"] != 443) {
+   header("HTTP/1.1 301 Moved Permanently");
+   header("Location: https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+   exit();
+}
 require 'helpers.php';
 if (isset($_POST['cloudName'])){
    // User submitted to the contact form
@@ -12,10 +17,10 @@ if (isset($_POST['cloudName'])){
    $endDate = trim($_POST['endDate']) ;
 
    if(empty($cloudName) || empty($securityToken) || empty($startDate) || empty($endDate)){
-      header( "Location: http://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
+      header( "Location: https://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
    }
 } else {
-      header( "Location: http://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
+      header( "Location: https://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
 
 }
 
@@ -50,8 +55,8 @@ if (empty($executions['resources'])) {
      exit;
 }
 
-$reportURL = "http://xcuitest.perfectomobile.com/appiumXCUITestValidation/" . $outPutFN;
-print "<a href=\"$reportURL\">$reportURL</a><br/>";
+$reportURL = "https://xcuitest.perfectomobile.com/appiumXCUITestValidation/" . $outPutFN;
+print "Scanning Started - When finished, report will be here: <a href=\"$reportURL\">$reportURL</a><br/>";
 
 foreach ($executions['resources'] as $singleExec){
 	$xpathPrint = 0;
@@ -88,8 +93,7 @@ foreach ($executions['resources'] as $singleExec){
 $htmlEND = htmlEnd();
 fwrite($outPut, $htmlEND);
 fclose($outPut);
-$reportURL = "http://xcuitest.perfectomobile.com/appiumXCUITestValidation/" . $outPutFN;
-print "<a href=\"$reportURL\">$reportURL</a><br/>";
+print "Scan Finished - Report here: <a href=\"$reportURL\">$reportURL</a><br/>";
 
 function queryReports($url, $token) {
    //create cURL connection
