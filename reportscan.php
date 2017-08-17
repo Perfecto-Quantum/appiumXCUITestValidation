@@ -86,7 +86,35 @@ foreach ($executions['resources'] as $singleExec){
        }
     }
     if($xpathPrint === 1){
-       $htmlOut = "<strong>Execution Report ID: ${singleExec['id']}</strong><br/>" . $htmlOut . "<br/>";
+       $htmlOut = "<strong>Execution Report ID: ${singleExec['id']}</strong> - <a href=\"${singleExec['reportURL']}\" target=\"_blank\"> ${singleExec['reportURL']}</a><br/>" . $htmlOut . "<br/>";
+       fwrite($outPut, $htmlOut);
+    }
+}
+$htmlEND = htmlEnd();
+fwrite($outPut, $htmlEND);
+fclose($outPut);
+function queryReports($url, $token) {
+   //create cURL connection
+   $curl_connection = 
+   curl_init($url);
+   curl_setopt($curl_connection, CURLOPT_CONNECTTIMEOUT, 30);
+   curl_setopt($curl_connection, CURLOPT_USERAGENT, 
+   "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)");
+   curl_setopt($curl_connection, CURLOPT_RETURNTRANSFER, true);
+   curl_setopt($curl_connection, CURLOPT_SSL_VERIFYPEER, false);
+   curl_setopt($curl_connection, CURLOPT_FOLLOWLOCATION, 1);
+ //  curl_setopt($curl_connection, CURLOPT_POSTFIELDS, $post_string);
+   curl_setopt($curl_connection, CURLOPT_HTTPHEADER, array(
+    "PERFECTO_AUTHORIZATION: $token"
+    ));
+   $result = curl_exec($curl_connection);
+   curl_close($curl_connection);
+   //var_dump(json_decode($result, true));
+   $res = json_decode($result, true);
+   return $res;
+}
+?>
+
        fwrite($outPut, $htmlOut);
     }
 }
