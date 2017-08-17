@@ -93,6 +93,7 @@ foreach ($executions['resources'] as $singleExec){
 $htmlEND = htmlEnd();
 fwrite($outPut, $htmlEND);
 fclose($outPut);
+print "Scan Finished - Report here: <a href=\"$reportURL\">$reportURL</a><br/>";
 
 function queryReports($url, $token) {
    //create cURL connection
@@ -110,6 +111,7 @@ function queryReports($url, $token) {
     ));
    $result = curl_exec($curl_connection);
    curl_close($curl_connection);
+
    //var_dump(json_decode($result, true));
    $res = json_decode($result, true);
    return $res;
