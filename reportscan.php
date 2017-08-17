@@ -2,7 +2,7 @@
 require 'helpers.php';
 
 $cloudURL = 'https://demo.reporting.perfectomobile.com';
-$startDate = '2017/05/01 17:00:00';
+$startDate = '2017/08/17 08:00:00';
 
 
 ($token = file_get_contents('../reportingToken.txt'))|| die ("Could not load token file: ../reportingToken.txt\n");
@@ -61,7 +61,7 @@ foreach ($executions['resources'] as $singleExec){
        }
     }
     if($xpathPrint === 1){
-       $htmlOut = "<strong>Execution Report ID: ${singleExec['id']}</strong><br/>" . $htmlOut . "<br/>";
+       $htmlOut = "<strong>Execution Report ID: ${singleExec['id']}</strong> - <a href=\"${singleExec['reportURL']}\" target=\"_blank\"> ${singleExec['reportURL']}</a><br/>" . $htmlOut . "<br/>";
        fwrite($outPut, $htmlOut);
     }
 }
