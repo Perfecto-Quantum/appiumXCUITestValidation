@@ -1,32 +1,11 @@
 <?php
-set_time_limit(0);
-error_reporting(E_ALL);
-ob_implicit_flush(TRUE);
-ob_end_flush();
-if($_SERVER["HTTPS"] != "on" && empty($_SERVER["HTTPS"]) && $_SERVER["PORT"] != 443 && $_SERVER["HTTP_X_FORWARDED_PROTO"] != "https" && $_SERVER["HTTP_X_FORWARDED_PORT"] != 443) {
-   header("HTTP/1.1 301 Moved Permanently");
-   header("Location: https://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-   exit();
-}
 require 'helpers.php';
-if (isset($_POST['cloudName'])){
-   // User submitted to the contact form
-   $cloudName = trim($_POST['cloudName']) ;
-   $securityToken = trim($_POST['securityToken']) ;	 
-   $startDate = trim($_POST['startDate']) ;
-   $endDate = trim($_POST['endDate']) ;
 
-   if(empty($cloudName) || empty($securityToken) || empty($startDate) || empty($endDate)){
-      header( "Location: https://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
-   }
-} else {
-      header( "Location: https://xcuitest.perfectomobile.com/appiumCloudRun/index.php" );	   
+$cloudURL = 'https://demo.reporting.perfectomobile.com';
+$startDate = '2017/08/17 08:00:00';
 
-}
 
-$cloudURL = 'https://' . "$cloudName";
-
-$token = $securityToken;
+($token = file_get_contents('../reportingToken.txt'))|| die ("Could not load token file: ../reportingToken.txt\n");
 
 $urlValidate = 'https://xpathvalidator.herokuapp.com/validateNew';
 $urlValidateTarget = 'https://xpathvalidator.herokuapp.com/?bdata=';
@@ -44,9 +23,8 @@ $htmlOut = "";
 
 date_default_timezone_set("GMT");
 $startTime = strtotime($startDate) * 1000;
-$endTime = strtotime($endDate) * 1000;
 
-$listExecutionsURL = $cloudURL . '/export/api/v1/test-executions?startExecutionTime[0]=' . $startTime . '&endExecutionTime[0]=' . $endTime; 
+$listExecutionsURL = $cloudURL . '/export/api/v1/test-executions?startExecutionTime[0]=' . $startTime; 
 
 $executions = queryReports($listExecutionsURL, $token);
 
@@ -55,13 +33,10 @@ if (empty($executions['resources'])) {
      exit;
 }
 
-$reportURL = "https://xcuitest.perfectomobile.com/appiumXCUITestValidation/" . $outPutFN;
-print "Scanning Started - When finished, report will be here: <a href=\"$reportURL\">$reportURL</a><br/>";
-
 foreach ($executions['resources'] as $singleExec){
 	$xpathPrint = 0;
 	$htmlOut = "";
-    print "Processing execution ID: ${singleExec['id']}\n<br/>";
+    print "Processing execution ID: ${singleExec['id']}\n";
 
     $singleTestURL = $cloudURL . '/export/api/v1/test-executions/' . $singleExec['id'] . "/commands"; 
     $singleExecution = queryReports($singleTestURL, $token);
@@ -93,7 +68,6 @@ foreach ($executions['resources'] as $singleExec){
 $htmlEND = htmlEnd();
 fwrite($outPut, $htmlEND);
 fclose($outPut);
-print "Scan Finished - Report here: <a href=\"$reportURL\">$reportURL</a><br/>";
 
 function queryReports($url, $token) {
    //create cURL connection
